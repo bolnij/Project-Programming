@@ -17,7 +17,7 @@ Lietotne, kas izstrādāta ar Flask ietvaru, lai palīdzētu skolēniem un stude
 - **app.py**: Galvenais servera puses fails, kas nodrošina maršrutēšanu un datu apstrādes loģiku.
 - **database.db**: SQLite datubāze, kurā tiek glabāti lietotāju konti un uzdevumi.
 - **static/**: Mape ar statiskajiem failiem:
-    - **style_2.css**: Definē vizuālo izskatu un tumšās tēmas loģiku.
+    - **style.css**: Definē vizuālo izskatu un tumšās tēmas loģiku.
     - **script.js**: JavaScript kods interaktīvai tēmu pārslēgšanai.
 - **templates/**: HTML veidnes (base.html, index.html, login.html, register.html).
 
