@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Mājasdarbi</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 style="margin: 0; font-size: 24px;">Sveiks, {{ session['username'] }}! 👋</h1>
+                <button onclick="toggleTheme()" class="btn btn-theme" style="margin-top: 10px; padding: 6px 12px; font-size: 12px;">🌓 Mainīt režīmu</button>
+            </div>
+            <nav>
+                {% if session['loma'] == 'admin' %}
+                <a href="/admin" class="btn btn-theme" style="margin-right: 10px;">⚙️ Admin</a>
+                {% endif %}
+                <a href="/logout" class="btn" style="color: var(--danger);">Iziet</a>
+            </nav>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}<div class="errors">{% for m in messages %}<p>{{ m }}</p>{% endfor %}</div>{% endif %}
+        {% endwith %}
+
+        <div style="background: var(--bg-primary); padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px dashed var(--border);">
+            <h3 style="margin-bottom: 15px;">➕ Pievienot jaunu uzdevumu</h3>
+            <form action="/create" method="POST" style="display: grid; grid-template-columns: 1fr 1fr 150px 150px; gap: 15px;">
+                <input type="text" name="subject" placeholder="Mācību priekšmets" required minlength="2">
+                <input type="text" name="task" placeholder="Uzdevuma apraksts" required minlength="3">
+                <input type="date" name="date">
+                <button type="submit" class="btn btn-add">Pievienot</button>
+            </form>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <form method="GET" style="display: flex; gap: 10px; width: 60%;">
+                <input type="text" name="search" placeholder="Meklēt pēc nosaukuma..." style="flex-grow: 1;">
+                <button type="submit" class="btn btn-add" style="background: var(--accent);">🔍 Meklēt</button>
+            </form>
+            <div style="font-size: 14px;">
+                <strong>Filtrs:</strong>
+                <a href="/?filter=Visi" style="margin-left: 10px;">Visi</a> | 
+                <a href="/?filter=Nav pabeigts">Aktīvie</a> | 
+                <a href="/?filter=Izpildīts">Pabeigtie</a>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Priekšmets</th>
+                    <th>Uzdevums</th>
+                    <th>Termiņš</th>
+                    <th style="text-align: right;">Darbības</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tasks %}
+                {% set is_overdue = t.terminis and t.terminis < today and t.statuss != 'Izpildīts' %}
+                <tr class="{{ 'task-done' if t.statuss == 'Izpildīts' }}" 
+                    style="{{ 'border-left: 4px solid var(--danger);' if is_overdue }}">
+                    <td style="font-weight: 600;">
+                        {{ t.prieksmets }}
+                        {% if is_overdue %}<span style="color: var(--danger); font-size: 10px;">(KAVĒTS)</span>{% endif %}
+                    </td>
+                    <td>{{ t.uzdevums }}</td>
+                    <td style="{{ 'color: var(--danger); font-weight: bold;' if is_overdue else 'color: var(--text-muted);' }}">
+                        {{ t.terminis if t.terminis else 'Nav termiņa' }}
+                    </td>
+                    <td style="text-align: right;">
+                        <a href="/complete/{{ t.id }}" title="Pabeigt" style="text-decoration: none; font-size: 18px;">✅</a>
+                        <a href="/priority/{{ t.id }}" title="Prioritāte" style="text-decoration: none; font-size: 18px; margin: 0 10px;">⭐</a>
+                        <a href="/edit/{{ t.id }}" title="Rediģēt" style="text-decoration: none; font-size: 18px;">📝</a>
+                        <a href="/delete/{{ t.id }}" onclick="return confirm('Vai tiešām dzēst?')" title="Dzēst" style="text-decoration: none; font-size: 18px; margin-left: 10px;">❌</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
+    </script>
+</body>
+</html>

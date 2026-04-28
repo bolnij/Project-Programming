@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Rediģēt uzdevumu</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 600px;">
+        <header>
+            <h2 style="margin: 0;">Rediģēt mājasdarbu 📝</h2>
+            <a href="/" class="btn" style="color: var(--text-muted); font-size: 14px;">Atcelt</a>
+        </header>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Mācību priekšmets:</label>
+                <input type="text" name="subject" value="{{ hw.prieksmets }}" required minlength="2">
+            </div>
+            
+            <div class="form-group">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Uzdevuma apraksts:</label>
+                <input type="text" name="task" value="{{ hw.uzdevums }}" required minlength="3">
+            </div>
+            
+            <div class="form-group">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Izpildes termiņš:</label>
+                <input type="date" name="date" value="{{ hw.terminis }}">
+            </div>
+            
+            <div style="margin-top: 30px; display: flex; gap: 15px;">
+                <button type="submit" class="btn btn-add" style="flex: 2;">Saglabāt izmaiņas</button>
+                <a href="/" class="btn btn-theme" style="flex: 1; text-decoration: none; display: flex; align-items: center; justify-content: center;">Atpakaļ</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
+    </script>
+</body>
+</html>

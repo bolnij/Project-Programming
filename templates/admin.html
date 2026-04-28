@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panelis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body id="pageBody">
+    <div class="container">
+        <h1>Sistēmas Statistika 📊</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p style="color: var(--text-muted); margin: 0;">Reģistrētie lietotāji</p>
+                <h2>{{ stats.users }}</h2>
+            </div>
+            <div class="stat-card">
+                <p style="color: var(--text-muted); margin: 0;">Visi mājasdarbi</p>
+                <h2>{{ stats.tasks }}</h2>
+            </div>
+        </div>
+
+        <h3>Lietotāju pārvaldība</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Lietotājvārds</th>
+                    <th>Loma</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>#{{ u.id }}</td>
+                    <td>{{ u.lietotajvards }}</td>
+                    <td><span style="background: var(--border); padding: 2px 8px; border-radius: 4px;">{{ u.loma }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <a href="/" class="btn btn-theme">⬅️ Atpakaļ uz sākumu</a>
+    </div>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Reģistrācija</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container" style="max-width: 500px;">
+        <h2>Izveidot jaunu kontu</h2>
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="errors">
+              {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label>Lietotājvārds (vismaz 4 burtu/ciparu simboli):</label>
+                <input type="text" name="username" required minlength="4" pattern="[a-zA-Z0-9_]+" placeholder="Piemēram: Janis88">
+            </div>
+            <div class="form-group">
+                <label>Parole (vismaz 6 simboli):</label>
+                <input type="password" name="password" required minlength="6" placeholder="******">
+            </div>
+            <button type="submit" class="btn btn-add" style="width: 100%;">Reģistrēties</button>
+        </form>
+        <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--border);">
+        <p style="text-align: center;">Jums jau ir konts? <a href="/login" style="color: var(--accent);">Pieteikties šeit</a></p>
+    </div>
+</body>
+</html>
